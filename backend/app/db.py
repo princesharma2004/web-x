@@ -8,3 +8,19 @@ def get_db():
         user=os.getenv("DB_USER", "hack"),
         password=os.getenv("DB_PASSWORD", "hack"),
     )
+
+
+def init_db():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            username TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL
+        );
+    """)
+    conn.commit()
+    cur.close()
+    conn.close()
+    
